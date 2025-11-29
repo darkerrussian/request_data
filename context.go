@@ -3,7 +3,6 @@ package requestdata
 import (
 	"context"
 	"google.golang.org/grpc/metadata"
-	"time"
 )
 
 type contextKey int
@@ -28,16 +27,4 @@ func FromContext(ctx context.Context) *RequestData {
 
 func CopyCtx(dst context.Context, src context.Context) context.Context {
 	return NewContextS(dst, FromContext(src))
-}
-
-func GetLocation(ctx context.Context) *time.Location {
-	timeZone := FromContext(ctx).ClientTimeZone
-	if timeZone == "" {
-		timeZone = defaultTimeZone
-	}
-	location, err := time.LoadLocation(timeZone)
-	if err != nil {
-		location, _ = time.LoadLocation(defaultTimeZone)
-	}
-	return location
 }
